@@ -53,34 +53,301 @@
         <button class="btn" onclick="openCreateModal()">+ Yeni Görev</button>
     </header>
     <div class="board">
-        <div class="column" id="col-todo" ondrop="drop(event)" ondragover="allowDrop(event)" data-status="todo"><div class="column-header">YAPILACAKLAR <span class="column-count" id="count-todo">0</span></div><div class="task-list" id="list-todo"></div></div>
-        <div class="column" id="col-inprogress" ondrop="drop(event)" ondragover="allowDrop(event)" data-status="inprogress"><div class="column-header">SÜRÜYOR <span class="column-count" id="count-inprogress">0</span></div><div class="task-list" id="list-inprogress"></div></div>
-        <div class="column" id="col-done" ondrop="drop(event)" ondragover="allowDrop(event)" data-status="done"><div class="column-header">BİTTİ 🎉 <span class="column-count" id="count-done">0</span></div><div class="task-list" id="list-done"></div></div>
+        <div class="column" id="col-todo" ondrop="drop(event)" ondragover="allowDrop(event)" data-status="todo">
+			<div class="column-header">YAPILACAKLAR <span class="column-count" id="count-todo">0</span></div>
+			<div class="task-list" id="list-todo"></div>
+		</div>
+        <div class="column" id="col-inprogress" ondrop="drop(event)" ondragover="allowDrop(event)" data-status="inprogress">
+			<div class="column-header">SÜRÜYOR <span class="column-count" id="count-inprogress">0</span></div>
+			<div class="task-list" id="list-inprogress"></div>
+		</div>
+        <div class="column" id="col-done" ondrop="drop(event)" ondragover="allowDrop(event)" data-status="done">
+			<div class="column-header">BİTTİ 🎉 <span class="column-count" id="count-done">0</span></div>
+			<div class="task-list" id="list-done"></div>
+		</div>
     </div>
-    <div class="modal" id="taskModal"><div class="modal-content"><h2 id="modalTitle">Yeni Görev</h2><div class="form-group"><label>Görev Adı</label><input type="text" id="taskText"></div><div class="form-group"><label>Kategori</label><div class="input-group"><select id="taskCategorySelect"><option value="" disabled selected>Seç...</option></select><button class="btn-icon btn-add" onclick="openCategoryModal()">+</button><button class="btn-icon btn-del" onclick="deleteSelectedCategory()">🗑️</button></div></div><div class="form-group"><label>Son Tarih</label><input type="date" id="taskDate"></div><div style="text-align: right; margin-top: 20px;"><button class="btn" style="background:#9ca3af" onclick="closeTaskModal()">İptal</button><button class="btn" onclick="saveTask()">Kaydet</button></div></div></div>
-    <div class="modal" id="categoryModal" style="z-index: 1001;"><div class="modal-content"><h2>Yeni Kategori</h2><div class="form-group"><label>İsim</label><input type="text" id="newCatName"></div><div class="form-group"><label>Renk</label><div class="color-options" id="catColorPicker"><div class="color-circle selected" style="background:#4F46E5" data-color="#4F46E5"></div><div class="color-circle" style="background:#10B981" data-color="#10B981"></div><div class="color-circle" style="background:#F59E0B" data-color="#F59E0B"></div><div class="color-circle" style="background:#EF4444" data-color="#EF4444"></div><div class="color-circle" style="background:#EC4899" data-color="#EC4899"></div></div></div><div style="text-align: right; margin-top: 20px;"><button class="btn" style="background:#9ca3af" onclick="closeCategoryModal()">İptal</button><button class="btn" onclick="addCategory()">Kaydet</button></div></div></div>
+    <div class="modal" id="taskModal">
+		<div class="modal-content">
+			<h2 id="modalTitle">Yeni Görev</h2>
+			<div class="form-group">
+				<label>Görev Adı</label>
+				<input type="text" id="taskText">
+			</div>
+			<div class="form-group">
+				<label>Kategori</label>
+				<div class="input-group">
+					<select id="taskCategorySelect"><option value="" disabled selected>Seç...</option></select>
+					<button class="btn-icon btn-add" onclick="openCategoryModal()">+</button>
+					<button class="btn-icon btn-del" onclick="deleteSelectedCategory()">🗑️</button>
+				</div>
+			</div>
+			<div class="form-group">
+				<label>Son Tarih</label>
+				<input type="date" id="taskDate">
+			</div>
+			<div style="text-align: right; margin-top: 20px;">
+				<button class="btn" style="background:#9ca3af" onclick="closeTaskModal()">İptal</button>
+				<button class="btn" onclick="saveTask()">Kaydet</button>
+			</div>
+		</div>
+	</div>
+    <div class="modal" id="categoryModal" style="z-index: 1001;">
+		<div class="modal-content">
+			<h2>Yeni Kategori</h2>
+			<div class="form-group">
+				<label>İsim</label>
+				<input type="text" id="newCatName">
+			</div>
+			<div class="form-group">
+				<label>Renk</label>
+				<div class="color-options" id="catColorPicker">
+					<div class="color-circle selected" style="background:#4F46E5" data-color="#4F46E5"></div>
+					<div class="color-circle" style="background:#10B981" data-color="#10B981"></div>
+					<div class="color-circle" style="background:#F59E0B" data-color="#F59E0B"></div>
+					<div class="color-circle" style="background:#EF4444" data-color="#EF4444"></div>
+					<div class="color-circle" style="background:#EC4899" data-color="#EC4899"></div>
+				</div>
+			</div>
+			<div style="text-align: right; margin-top: 20px;">
+				<button class="btn" style="background:#9ca3af" onclick="closeCategoryModal()">İptal</button>
+				<button class="btn" onclick="addCategory()">Kaydet</button>
+			</div>
+		</div>
+	</div>
     <script>
         const API_URL = 'api.php';
+		
         let userId = localStorage.getItem('todo_user_id') || 'user_' + Math.random().toString(36).substr(2, 9);
         localStorage.setItem('todo_user_id', userId);
-        let selectedCatColor = '#4F46E5'; let categories = []; let allTasks = []; let isEditMode = false; let currentEditingId = null;
-        const Toast = Swal.mixin({ toast: true, position: 'top-end', showConfirmButton: false, timer: 3000 });
+		
+        let selectedCatColor = '#4F46E5';
+		let categories = [];
+		let allTasks = [];
+		let isEditMode = false;
+		let currentEditingId = null;
+		
+        const Toast = Swal.mixin({
+			toast: true,
+			position: 'top-end',
+			showConfirmButton: false,
+			timer: 3000
+		});
+		
         document.addEventListener('DOMContentLoaded', () => { loadTasks(); loadCategories(); });
-        async function loadCategories() { const res = await fetch(`${API_URL}?action=get_categories&user_id=${userId}`); categories = await res.json(); updateCategoryDropdown(); }
-        function updateCategoryDropdown() { const select = document.getElementById('taskCategorySelect'); select.innerHTML = '<option value="" disabled selected>Kategori Seçin...</option>'; categories.forEach(cat => { const opt = document.createElement('option'); opt.value = JSON.stringify({id: cat.id, name: cat.name, color: cat.color}); opt.innerText = cat.name; select.appendChild(opt); }); }
-        async function loadTasks() { const res = await fetch(`${API_URL}?user_id=${userId}`); allTasks = await res.json(); ['todo', 'inprogress', 'done'].forEach(id => { document.getElementById(`list-${id}`).innerHTML = ''; document.getElementById(`count-${id}`).innerText = '0'; }); let counts = { todo: 0, inprogress: 0, done: 0 }; allTasks.forEach(task => { let status = task.status || 'todo'; if(!counts.hasOwnProperty(status)) status = 'todo'; createCardDOM(task, status); counts[status]++; }); document.getElementById('count-todo').innerText = counts.todo; document.getElementById('count-inprogress').innerText = counts.inprogress; document.getElementById('count-done').innerText = counts.done; }
-        function createCardDOM(task, status) { const list = document.getElementById(`list-${status}`); const card = document.createElement('div'); card.className = 'card'; card.draggable = true; card.id = `task-${task.id}`; card.style.borderLeftColor = task.color; const today = new Date().toISOString().split('T')[0]; const isOverdue = task.due_date && task.due_date < today && status !== 'done'; if (isOverdue) card.classList.add('overdue'); card.ondragstart = (e) => e.dataTransfer.setData("text", task.id); card.innerHTML = `<div class="card-actions"><div class="action-btn edit-btn" onclick="openEditModal(${task.id})">✎</div><div class="action-btn delete-btn" onclick="deleteTask(${task.id})">✕</div></div><div class="card-tags"><span class="tag" style="background:${task.color}">${task.category}</span></div><div class="card-title">${task.text}</div><div class="card-footer"><span>${isOverdue ? '<span class="overdue-badge">⚠️ Gecikti</span>' : ''} 📅 ${task.due_date || '-'}</span></div>`; list.appendChild(card); }
-        async function saveTask() { const text = document.getElementById('taskText').value; const catVal = document.getElementById('taskCategorySelect').value; const date = document.getElementById('taskDate').value; if (!text || !catVal) { Swal.fire('Eksik Bilgi', 'Lütfen görev adı ve kategori seçin!', 'warning'); return; } const catObj = JSON.parse(catVal); const payload = { action: isEditMode ? 'edit_task' : 'create', id: currentEditingId, user_id: userId, text: text, category: catObj.name, color: catObj.color, due_date: date }; await fetch(API_URL, { method: 'POST', body: JSON.stringify(payload) }); closeTaskModal(); loadTasks(); Toast.fire({ icon: 'success', title: 'Kaydedildi' }); }
-        async function deleteTask(id) { const result = await Swal.fire({ title: 'Silinsin mi?', icon: 'warning', showCancelButton: true, confirmButtonColor: '#EF4444', confirmButtonText: 'Evet' }); if (result.isConfirmed) { await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'delete', id: id }) }); loadTasks(); Toast.fire({ icon: 'success', title: 'Silindi' }); } }
-        async function deleteSelectedCategory() { const val = document.getElementById('taskCategorySelect').value; if (!val) return; const cat = JSON.parse(val); if ((await Swal.fire({ title: 'Kategori silinsin mi?', showCancelButton: true, confirmButtonColor: '#EF4444' })).isConfirmed) { await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'delete_category', id: cat.id }) }); loadCategories(); Toast.fire({ icon: 'success', title: 'Kategori silindi' }); } }
-        async function addCategory() { const name = document.getElementById('newCatName').value; if(!name) return; await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'add_category', user_id: userId, name: name, color: selectedCatColor }) }); closeCategoryModal(); loadCategories(); document.getElementById('newCatName').value = ''; }
-        function openCreateModal() { isEditMode = false; document.getElementById('modalTitle').innerText = "Yeni Görev"; document.getElementById('taskText').value = ''; document.getElementById('taskDate').value = ''; document.getElementById('taskCategorySelect').value = ''; document.getElementById('taskModal').style.display = 'flex'; }
-        function openEditModal(id) { isEditMode = true; currentEditingId = id; document.getElementById('modalTitle').innerText = "Görevi Düzenle"; const task = allTasks.find(t => t.id == id); document.getElementById('taskText').value = task.text; document.getElementById('taskDate').value = task.due_date; const select = document.getElementById('taskCategorySelect'); for (let i = 0; i < select.options.length; i++) { try { if (JSON.parse(select.options[i].value).name === task.category) { select.selectedIndex = i; break; } } catch(e) {} } document.getElementById('taskModal').style.display = 'flex'; }
-        function allowDrop(ev) { ev.preventDefault(); }
-        async function drop(ev) { ev.preventDefault(); const taskId = ev.dataTransfer.getData("text"); let target = ev.target; while (!target.classList.contains('column')) target = target.parentElement; await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'update', id: taskId, status: target.dataset.status }) }); loadTasks(); }
-        document.querySelectorAll('#catColorPicker .color-circle').forEach(c => { c.addEventListener('click', e => { document.querySelectorAll('#catColorPicker .color-circle').forEach(x => x.classList.remove('selected')); e.target.classList.add('selected'); selectedCatColor = e.target.dataset.color; }); });
+		
+        async function loadCategories() {
+			const res = await fetch(`${API_URL}?action=get_categories&user_id=${userId}`);
+			categories = await res.json();
+			updateCategoryDropdown();
+		}
+		
+        function updateCategoryDropdown() {
+			const select = document.getElementById('taskCategorySelect');
+			select.innerHTML = '<option value="" disabled selected>Kategori Seçin...</option>';
+			
+			categories.forEach(cat => { 
+				const opt = document.createElement('option');
+				opt.value = JSON.stringify({
+					id: cat.id,
+					name: cat.name,
+					color: cat.color
+				});
+				opt.innerText = cat.name;
+				select.appendChild(opt);
+			});
+		}
+        
+		async function loadTasks() {
+			const res = await fetch(`${API_URL}?user_id=${userId}`);
+			allTasks = await res.json();
+			
+			['todo', 'inprogress', 'done'].forEach(id => {
+				document.getElementById(`list-${id}`).innerHTML = '';
+				document.getElementById(`count-${id}`).innerText = '0';
+			});
+			
+			let counts = {todo: 0, inprogress: 0, done: 0 };
+			
+			allTasks.forEach(task => {
+				let status = task.status || 'todo';
+				if(!counts.hasOwnProperty(status)) status = 'todo';
+				createCardDOM(task, status);
+				counts[status]++;
+			});
+			
+			document.getElementById('count-todo').innerText = counts.todo;
+			document.getElementById('count-inprogress').innerText = counts.inprogress;
+			document.getElementById('count-done').innerText = counts.done;
+		}
+        
+		function createCardDOM(task, status) { const list = document.getElementById(`list-${status}`);
+		
+		const card = document.createElement('div');
+		card.className = 'card';
+		card.draggable = true;
+		card.id = `task-${task.id}`;
+		card.style.borderLeftColor = task.color;
+		
+		const today = new Date().toISOString().split('T')[0];
+		
+		const isOverdue = task.due_date && task.due_date < today && status !== 'done';
+		if (isOverdue) card.classList.add('overdue');
+		
+		card.ondragstart = (e) => e.dataTransfer.setData("text", task.id);
+		card.innerHTML = `<div class="card-actions"><div class="action-btn edit-btn" onclick="openEditModal(${task.id})">✎</div><div class="action-btn delete-btn" onclick="deleteTask(${task.id})">✕</div></div><div class="card-tags"><span class="tag" style="background:${task.color}">${task.category}</span></div><div class="card-title">${task.text}</div><div class="card-footer"><span>${isOverdue ? '<span class="overdue-badge">⚠️ Gecikti</span>' : ''} 📅 ${task.due_date || '-'}</span></div>`; list.appendChild(card); }
+        
+		async function saveTask() {
+			const text = document.getElementById('taskText').value;
+			const catVal = document.getElementById('taskCategorySelect').value;
+			const date = document.getElementById('taskDate').value;
+			
+			if (!text || !catVal) { Swal.fire('Eksik Bilgi', 'Lütfen görev adı ve kategori seçin!', 'warning');
+				return;
+			} 
+		
+			const catObj = JSON.parse(catVal);
+			
+			const payload = {
+				action: isEditMode ? 'edit_task' : 'create',
+				id: currentEditingId,
+				user_id: userId,
+				text: text,
+				category: catObj.name,
+				color: catObj.color,
+				due_date: date
+			}; 
+			
+			await fetch(API_URL, { 
+				method: 'POST',
+				body: JSON.stringify(payload) 
+			});
+			
+			closeTaskModal();
+			
+			loadTasks(); Toast.fire({
+				icon: 'success',
+				title: 'Kaydedildi'
+			});
+		}
+		
+        async function deleteTask(id) {
+			const result = await Swal.fire({
+				title: 'Silinsin mi?',
+				icon: 'warning',
+				showCancelButton: true,
+				confirmButtonColor: '#EF4444',
+				confirmButtonText: 'Evet'
+			});
+			
+			if (result.isConfirmed) {
+				await fetch(API_URL, {
+					method: 'POST',
+					body: JSON.stringify({ action: 'delete', id: id })
+				});
+				
+				loadTasks();
+				
+				Toast.fire({
+					icon: 'success',
+					title: 'Silindi'
+				});
+			}
+				
+		}
+				
+        async function deleteSelectedCategory() {
+			const val = document.getElementById('taskCategorySelect').value;
+			if (!val) return;
+			
+			const cat = JSON.parse(val);
+			if ((await Swal.fire({ title: 'Kategori silinsin mi?', showCancelButton: true, confirmButtonColor: '#EF4444' })).isConfirmed) {
+				await fetch(API_URL, {
+					method: 'POST',
+					body: JSON.stringify({ action: 'delete_category', id: cat.id })
+				});
+				
+				loadCategories();
+				Toast.fire({ icon: 'success', title: 'Kategori silindi' });
+			}
+		}
+        
+		async function addCategory() {
+			const name = document.getElementById('newCatName').value;
+			if(!name) return;
+			
+			await fetch(API_URL, {
+				method: 'POST',
+				body: JSON.stringify({ action: 'add_category', user_id: userId, name: name, color: selectedCatColor })
+			});
+			
+			closeCategoryModal();
+			loadCategories();
+			document.getElementById('newCatName').value = '';
+		}
+        
+		function openCreateModal() {
+			isEditMode = false;
+			document.getElementById('modalTitle').innerText = "Yeni Görev";
+			document.getElementById('taskText').value = '';
+			document.getElementById('taskDate').value = '';
+			document.getElementById('taskCategorySelect').value = '';
+			document.getElementById('taskModal').style.display = 'flex';
+		}
+        
+		function openEditModal(id) {
+			isEditMode = true;
+			currentEditingId = id;
+			
+			document.getElementById('modalTitle').innerText = "Görevi Düzenle"; 
+			
+			const task = allTasks.find(t => t.id == id);
+			
+			document.getElementById('taskText').value = task.text;
+			document.getElementById('taskDate').value = task.due_date;
+			
+			const select = document.getElementById('taskCategorySelect');
+			
+			for (let i = 0; i < select.options.length; i++) {
+				try {
+					if (JSON.parse(select.options[i].value).name === task.category) {
+						select.selectedIndex = i;
+						break;
+					}
+				} catch(e) {
+				
+				}
+			}
+			
+			document.getElementById('taskModal').style.display = 'flex';
+		}
+        
+		function allowDrop(ev) { ev.preventDefault(); }
+		
+        async function drop(ev) {
+			ev.preventDefault();
+			const taskId = ev.dataTransfer.getData("text");
+			let target = ev.target;
+			while (!target.classList.contains('column')) target = target.parentElement;
+			
+			await fetch(API_URL, {
+				method: 'POST',
+				body: JSON.stringify({ action: 'update', id: taskId, status: target.dataset.status })
+			});
+			loadTasks();
+		}
+			
+		document.querySelectorAll('#catColorPicker .color-circle').forEach(c => {
+			c.addEventListener('click', e => {
+				document.querySelectorAll('#catColorPicker .color-circle').forEach(x => x.classList.remove('selected'));
+				e.target.classList.add('selected');
+				selectedCatColor = e.target.dataset.color;
+			});
+		});
+		
         function closeTaskModal() { document.getElementById('taskModal').style.display = 'none'; }
+		
         function openCategoryModal() { document.getElementById('categoryModal').style.display = 'flex'; }
+		
         function closeCategoryModal() { document.getElementById('categoryModal').style.display = 'none'; }
     </script>
 </body>
