@@ -1,5 +1,11 @@
 # Bulut-Bilişim-Proje
 Bulut Bilişim Proje Ödevi Raporu
+	
+| Hazırlayanlar       | Numaralar   |
+| :-----------------: | ----------- |
+| Deniz Erdem ARAS    | B221200014  |
+| Ahmet Timuçin UÇAN  | B221200059  |
+| Metehan YILDIZ      | B231200377  |
 
 Sunum videosu: https://www.youtube.com/watch?v=uhfzDZ4CvI4
 
