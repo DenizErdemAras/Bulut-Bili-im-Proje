@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    ports:
+      - "80:80"
+    volumes:
+      - ./src:/var/www/html
+    depends_on:
+      - db
+    networks:
+      - kanban-network
+
+  db:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: password # Şifre orijinal projeyle aynı değil
+      MYSQL_DATABASE: tododb
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - kanban-network
+
+volumes:
+  db_data:
+
+networks:
+  kanban-network:
+    driver: bridge
