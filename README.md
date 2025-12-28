@@ -8,6 +8,8 @@ Bulut Bilişim Proje Ödevi Raporu
 | Metehan YILDIZ      | B231200377  |
 
 Sunum videosu: https://www.youtube.com/watch?v=uhfzDZ4CvI4
+(18 Ocak'a kadar) Çalışan proje: http://13.61.42.129
+
 
 ## UYGULAMA ADIMLARI
 Projenin bulut ortamında devreye alınması sürecinde izlenen teknik adımlar aşağıda kronolojik sırayla listelenmiştir.
