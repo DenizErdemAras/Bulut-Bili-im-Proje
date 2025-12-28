@@ -1,6 +1,8 @@
 # Bulut-Bilişim-Proje
 Bulut Bilişim Proje Ödevi Raporu
 
+Sunum videosu: https://www.youtube.com/watch?v=uhfzDZ4CvI4
+
 ## UYGULAMA ADIMLARI
 Projenin bulut ortamında devreye alınması sürecinde izlenen teknik adımlar aşağıda kronolojik sırayla listelenmiştir.
 
