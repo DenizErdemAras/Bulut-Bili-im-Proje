@@ -7,8 +7,7 @@ Bulut Bilişim Proje Ödevi Raporu
 | Ahmet Timuçin UÇAN  | B221200059  |
 | Metehan YILDIZ      | B231200377  |
 
-Sunum videosu: https://www.youtube.com/watch?v=uhfzDZ4CvI4 <br>
-(18 Ocak'a kadar) Çalışan proje: http://13.61.42.129
+~(18 Ocak'a kadar) Çalışan proje: http://13.61.42.129~
 
 
 ## UYGULAMA ADIMLARI
